@@ -198,7 +198,7 @@ if __name__ == "__main__":
     parser.add_argument('--datelimit', default=last_update, type=str, help='Latest date of upload, used to get a specific version of the dataset (default: %s)'%(last_update))
     parser.add_argument('--use_wget', action='store_true', help="Use wget instead of python's request library (more likely to succeed)")
     parser.add_argument('--custom_program', help="Custom program (alternative to wget), must follow the pattern custom_program url -O path")
-    parser.add_argument('--target_dir', default='datasets/NIND', type=str, help="Target directory (default: data)")
+    parser.add_argument('--target_dir', default='data', type=str, help="Target directory (default: data)")
     parser.add_argument('--sets2dl', nargs='*', help='Space separated list of image sets to download (default: %s)'%(' '.join(imageslist.keys())))
     parser.add_argument('--max_attempts', default=3, type=int, help='Maximum download attempts (default: 3)')
     args = parser.parse_args()
