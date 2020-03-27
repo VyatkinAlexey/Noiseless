@@ -34,6 +34,7 @@ def train_test_split(path_to_csv_file, test_size=0.2):
     pd.DataFrame(data, columns=['image', 'label', 'phase']).to_csv(path_to_csv_file, index=False)
 
 def get_frame(image, frame_size, overlay_size, index, overlay_mask=None):
+    """Getting frame from image (numpy.ndarray) in PIL Image format."""
     height, width, channels = image.shape
     frame_x, frame_y = frame_size
     overlay_x, overlay_y = overlay_size
@@ -57,7 +58,7 @@ def get_frame(image, frame_size, overlay_size, index, overlay_mask=None):
     return Image.fromarray(image[start_x:end_x, start_y:end_y, :])
     
 def cutting(image, frame_size=(256, 256), overlay_size=(1, 1)):
-    """Cutting image (np.array) into frames."""
+    """Cutting image (numpy.ndarray) into frames list."""
     height, width, channels = image.shape
     frame_x, frame_y = frame_size
     overlay_x, overlay_y = overlay_size
@@ -79,7 +80,8 @@ def cutting(image, frame_size=(256, 256), overlay_size=(1, 1)):
     return frames, overlay_mask
 
 def gluing(frames, overlay_mask, overlay_size=(1, 1)):
-    """Gluing frames into one image."""
+    """Gluing frames list ([numpy.ndarray, ...])
+       into one image (numpy.ndarray in the range [0, 255])."""
     height, width, _ = overlay_mask.shape
     frame_x, frame_y, _ = frames[0].shape
     overlay_x, overlay_y = overlay_size
@@ -103,4 +105,4 @@ def gluing(frames, overlay_mask, overlay_size=(1, 1)):
         end_y = frame_y
         start_y = 0
     
-    return (image / overlay_mask).astype(int)
+    return (image / overlay_mask).astype(np.uint8)

@@ -38,6 +38,7 @@ class DenoisingDataset(Dataset):
         np.random.seed(0)
         if self.do_transform():
             return self.transform((image, label))
+        return (image, label)
 
     def __len__(self):
         return len(self.dataset) * self.frames_number
