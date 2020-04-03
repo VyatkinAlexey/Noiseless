@@ -57,8 +57,8 @@ def get_frame(image, frame_size, overlay_size, index, overlay_mask=None):
         return image[start_x:end_x, start_y:end_y, :], overlay_mask
     return Image.fromarray(image[start_x:end_x, start_y:end_y, :])
     
-def cutting(image, frame_size=(256, 256), overlay_size=(1, 1)):
-    """Cutting image (numpy.ndarray) into frames list."""
+def slicing(image, frame_size=(256, 256), overlay_size=(1, 1)):
+    """Slicing image (numpy.ndarray) into frames list."""
     height, width, channels = image.shape
     frame_x, frame_y = frame_size
     overlay_x, overlay_y = overlay_size
