@@ -44,9 +44,9 @@ class DenoisingDataset(Dataset):
         return len(self.dataset) * self.frames_number
     
     def get_frames_number(self):
-        height, width = self.image_size
-        frame_x, frame_y = self.frame_size
-        overlay_x, overlay_y = self.overlay_size
+        width, height = self.image_size
+        frame_y, frame_x = self.frame_size
+        overlay_y, overlay_x = self.overlay_size
         
         columns_number = (width - overlay_y) // (frame_y - overlay_y)
         if (width - overlay_y) % (frame_y - overlay_y) != 0:
