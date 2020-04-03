@@ -1,3 +1,0 @@
-image,label,phase
-./data\banana\NIND_banana_ISOH3.png,./data\banana\NIND_banana_ISO1250.png,train
-./data\beads\NIND_beads_ISO6400.jpg,./data\beads\NIND_beads_ISO1000.jpg,test
