@@ -1,7 +1,11 @@
 import os
 import numpy as np
+import matplotlib.pyplot as plt
 import pandas as pd
+import torch
+
 from PIL import Image
+from conversion_transforms import _ToTensor, _ToNumpy
 
 
 def get_image_and_label(path_to_images):
@@ -60,8 +64,8 @@ def get_frame(image, frame_size, overlay_size, index, overlay_mask=None):
 def slicing(image, frame_size=(256, 256), overlay_size=(1, 1)):
     """Slicing image (numpy.ndarray) into frames list."""
     height, width, channels = image.shape
-    frame_x, frame_y = frame_size
-    overlay_x, overlay_y = overlay_size
+    frame_y, frame_x = frame_size
+    overlay_y, overlay_x = overlay_size
     
     columns_number = (width - overlay_y) // (frame_y - overlay_y)
     if (width - overlay_y) % (frame_y - overlay_y) != 0:
@@ -85,7 +89,7 @@ def gluing(frames, overlay_mask, overlay_size=(1, 1)):
     """
     height, width, _ = overlay_mask.shape
     frame_x, frame_y, _ = frames[0].shape
-    overlay_x, overlay_y = overlay_size
+    overlay_y, overlay_x = overlay_size
     
     image = np.zeros(overlay_mask.shape)
     start_x, start_y = (0, 0)
@@ -107,3 +111,38 @@ def gluing(frames, overlay_mask, overlay_size=(1, 1)):
         start_y = 0
     
     return (image / overlay_mask).astype(np.uint8)
+
+def plot_sliced_image(frames, image_size, frame_size, overlay_size, figsize=(16, 9)):
+    """Plotting frames list ([numpy.ndarray, ...])."""
+    width, height = image_size
+    frame_y, frame_x = frame_size
+    overlay_y, overlay_x = overlay_size
+    
+    columns_number = (width - overlay_y) // (frame_y - overlay_y)
+    if (width - overlay_y) % (frame_y - overlay_y) != 0:
+        columns_number += 1
+    
+    rows_number = (height - overlay_x) // (frame_x - overlay_x)
+    if (height - overlay_x) % (frame_x - overlay_x) != 0:
+        rows_number += 1
+    
+    fig, axes = plt.subplots(ncols=columns_number, nrows=rows_number, figsize=figsize)
+    for i, ax in enumerate(axes.flat):
+        im = Image.fromarray(frames[i])
+        ax.imshow(im);
+
+def get_predicted_frames(model, frames):
+    """Prediction of frames list ([numpy.ndarray, ...]) via model."""
+    predicted_frames = []
+    for frame in frames:
+        model.eval()
+        with torch.set_grad_enabled(False):
+            predicted_frame = model.to('cpu')(_ToTensor()((np.array(frame), None)).unsqueeze(0)/1.0).squeeze()
+        predicted_frames.append(_ToNumpy()((predicted_frame, None)))
+    
+    return predicted_frames
+        
+def plot_glued_image(frames, overlay_mask, overlay_size, figsize=(16, 9)):
+    """Plotting glued image from frames list ([numpy.ndarray, ...]) and overlay mask."""
+    plt.figure(figsize=figsize)
+    plt.imshow(gluing(frames, overlay_mask, overlay_size));
