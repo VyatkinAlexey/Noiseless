@@ -40,8 +40,8 @@ def train_test_split(path_to_csv_file, test_size=0.2):
 def get_frame(image, frame_size, overlay_size, index, overlay_mask=None):
     """Getting frame from image (numpy.ndarray) in PIL Image format."""
     height, width, channels = image.shape
-    frame_x, frame_y = frame_size
-    overlay_x, overlay_y = overlay_size
+    frame_y, frame_x = frame_size
+    overlay_y, overlay_x = overlay_size
     
     columns_number = (width - overlay_y) // (frame_y - overlay_y)
     if (width - overlay_y) % (frame_y - overlay_y) != 0:
