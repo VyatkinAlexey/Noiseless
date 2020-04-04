@@ -19,14 +19,14 @@ def arguments_parsing(argv):
         opts, args = getopt.getopt(argv, "h", ["path_to_clean_images=", "path_to_corrupted_images=",
                                                "noise_type="])
     except getopt.GetoptError:
-        print("./train_test.py --path_to_clean_images=<str> "+
+        print("./gaussian_noise_overlay.py --path_to_clean_images=<str> "+
               "--path_to_corrupted_images=<str> "+
               "[--noise_type=<int>]")
         sys.exit(2)
     
     for opt, arg in opts:
         if opt == '-h':
-            print("./train_test.py --path_to_clean_images=<str> "+
+            print("./gaussian_noise_overlay.py --path_to_clean_images=<str> "+
                   "--path_to_corrupted_images=<str> "+
                   "[--noise_type=<int>]")
             sys.exit()
