@@ -4,9 +4,50 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import torch
 import seaborn as sns
+import cv2 as cv
 
+from pathlib import Path
 from PIL import Image
 from conversion_transforms import _ToTensor, _ToNumpy
+
+
+def ProcessDataset(path_to_corrupted, path_to_reference, path_for_processed, num_noises=17, noise_level=4):
+    """
+    Process dataset: create folders structure; convert all images to PNG;
+    create noise_only images; split images into corresponding subfolders.
+    """
+    path_noised = path_for_processed + "noised/"
+    path_clean = path_for_processed + "clean/"
+    path_only_noise = path_for_processed + "only_noise/"
+
+    Path(path_only_noise).mkdir(parents=True, exist_ok=True)
+    Path(path_clean).mkdir(parents=True, exist_ok=True)
+    for i in range(1, num_noises + 1):
+            Path(f"{path_noised[:-1]}_{i}/").mkdir(parents=True, exist_ok=True)
+    for noised_name in os.listdir(path_to_corrupted):
+        noise_type = noised_name.split("_")[1]
+        if int(noise_type[0]) == 0:
+            noise_type = noise_type[1:]
+        current_noise_level = noised_name.split("_")[2][:-4]
+        noised = cv.imread(path_to_corrupted + noised_name)
+        if int(current_noise_level) == 4:
+            cv.imwrite(f"{path_noised[:-1]}_{noise_type}/" + noised_name[:-4] + ".PNG", np.int32(noised))
+    for clean_name in os.listdir(path_to_reference):
+        clean = cv.imread(path_to_reference + clean_name)
+        cv.imwrite(path_clean + clean_name[:-4] + ".PNG", np.int32(clean))
+
+    def CreateNoise(path_noised, path_clean, path_only_noise):
+        listdir_noised = os.listdir(path_noised)
+        listdir_clean = os.listdir(path_clean)
+        for idx, noised_name in enumerate(listdir_noised):
+            noised = np.int32(cv.imread(path_noised + noised_name))
+            clean = np.int32(cv.imread(path_clean + listdir_clean[idx]))
+            noise = noised - clean
+            cv.imwrite(path_only_noise + "noise" + noised_name[-11:-4] + ".PNG", noise)
+
+    for i in range(1, num_noises + 1):
+        path_noised = f"{path_for_processed}noised_{i}/"
+        CreateNoise(path_noised, path_clean, path_only_noise)
 
 
 def get_image_and_label(path_to_images):
