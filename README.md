@@ -35,5 +35,5 @@ python train_test.py -h
 The example of usage:
 
 ```
-python ./train_test.py --train=True --noise_folders='noised_1' --image_size='512, 384' --frame_size='64, 64' --overlay_size='5, 5' --latent_clean_size=0.9 --batch_size=4 --epochs=20 --test=True
+python ./train_test.py --train=True --noise_types='1, 2' --image_size='512, 384' --frame_size='64, 64' --overlay_size='5, 5' --latent_clean_size=0.9 --batch_size=4 --epochs=20 --test=True
 ```
