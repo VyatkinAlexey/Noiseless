@@ -25,7 +25,7 @@ PATH_TO_RESULTS = './results'
 
 TRAIN = False
 
-NOISE_FOLDERS = []
+NOISE_TYPES = []
 # IMAGE_SIZE = (3840, 2160) # (width, height) Ultra HD 4K
 # IMAGE_SIZE = (1920, 1080) # (width, height) Full HD
 IMAGE_SIZE = (1080, 720) # (width, height) HD
@@ -42,7 +42,7 @@ DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 def arguments_parsing(argv):
     train = TRAIN
     test = TEST
-    noise_folders = NOISE_FOLDERS
+    noise_types = NOISE_TYPES
     image_size = IMAGE_SIZE
     frame_size = FRAME_SIZE
     overlay_size = OVERLAY_SIZE
@@ -50,12 +50,12 @@ def arguments_parsing(argv):
     batch_size = BATCH_SIZE
     epochs = EPOCHS
     try:
-        opts, args = getopt.getopt(argv, "h", ["train=", "noise_folders=",
+        opts, args = getopt.getopt(argv, "h", ["train=", "noise_types=",
                                                "image_size=", "frame_size=", "overlay_size=",
                                                "latent_clean_size=",
                                                "batch_size=", "epochs=", "test="])
     except getopt.GetoptError:
-        print("./train_test.py --train=<True/False> [--noise_folders='noised_1, ...' "+
+        print("./train_test.py --train=<True/False> [--noise_types='1, ...' "+
               "--image_size='width, height' --frame_size='width, height' --overlay_size='width, height'] "+
               "--latent_clean_size=<float> "+
               "--batch_size=<int> --epochs=<int> --test=<True/False>")
@@ -63,7 +63,7 @@ def arguments_parsing(argv):
     
     for opt, arg in opts:
         if opt == '-h':
-            print("./train_test.py --train=<True/False> [--noise_folders='noised_1, ...' "+
+            print("./train_test.py --train=<True/False> [--noise_types='1, ...' "+
                   "--image_size='width, height' --frame_size='width, height' --overlay_size='width, height'] "+
                   "--latent_clean_size=<float> "+
                   "--batch_size=<int> --epochs=<int> --test=<True/False>")
@@ -73,8 +73,8 @@ def arguments_parsing(argv):
                 train = False
             elif arg == 'True':
                 train = True
-        elif opt == "--noise_folders":
-            noise_folders = arg.split(", ")
+        elif opt == "--noise_types":
+            noise_types = arg.split(", ")
         elif opt == "--image_size":
             image_size = tuple(map(int, arg.split(", ")))
         elif opt == "--frame_size":
@@ -93,7 +93,7 @@ def arguments_parsing(argv):
             elif arg == 'True':
                 test = True
             
-    return train, noise_folders, image_size, frame_size, overlay_size, latent_clean_size, batch_size, epochs, test
+    return train, noise_types, image_size, frame_size, overlay_size, latent_clean_size, batch_size, epochs, test
 
 def zero_corresp_rows(latent_vector, labels, num_latent_clean):
     """
@@ -183,11 +183,11 @@ def test_model(model, dataset):
         save_result(model, np_image, FRAME_SIZE, OVERLAY_SIZE, path_to_save, figsize=(16, 9))
 
 def main(argv):
-    TRAIN, NOISE_FOLDERS, IMAGE_SIZE, FRAME_SIZE, OVERLAY_SIZE, LATENT_CLEAN_SIZE, BATCH_SIZE, EPOCHS, TEST = arguments_parsing(argv)
+    TRAIN, NOISE_TYPES, IMAGE_SIZE, FRAME_SIZE, OVERLAY_SIZE, LATENT_CLEAN_SIZE, BATCH_SIZE, EPOCHS, TEST = arguments_parsing(argv)
     
     if TRAIN:
         print('model training with parameters:\n'+
-              'noise folders = {}\n'.format(NOISE_FOLDERS)+
+              'noise types = {}\n'.format(NOISE_TYPES)+
               'image size = {}\n'.format(IMAGE_SIZE)+
               'frame size = {}\n'.format(FRAME_SIZE)+
               'overlay size = {}\n'.format(OVERLAY_SIZE)+
@@ -196,7 +196,7 @@ def main(argv):
               'number of epochs = {}\n'.format(EPOCHS))
         
         # dataset table creating
-        make_dataset_table(PATH_TO_DATA, NOISE_FOLDERS, PATH_TO_DATASET_TABLE)
+        make_dataset_table(PATH_TO_DATA, NOISE_TYPES, PATH_TO_DATASET_TABLE)
         train_test_split(PATH_TO_DATASET_TABLE, test_size=0.2)
 
         # dataset and dataloader creating
@@ -247,8 +247,9 @@ def main(argv):
         if not os.path.exists(PATH_TO_RESULTS):
             os.makedirs(PATH_TO_RESULTS)
         test_model(model, test_dataset)
-    
-    os.system("pause")
+        
+    print('process completed: OK')
+#     os.system("pause")
 
 if __name__ == "__main__":
     main(sys.argv[1:])

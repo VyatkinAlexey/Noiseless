@@ -15,23 +15,30 @@ def get_image_type(folder_name):
             return folder_name[:i]
     return folder_name
 
-def get_label(folder_name, noise_folders):
+def get_noise_type(folder_name):
+    for i in reversed(range(len(folder_name))):
+        if folder_name[i] == '_':
+            return folder_name[i + 1:]
+
+def get_label(folder_name, noise_types):
     """Getting type of image."""
     image_type = get_image_type(folder_name)
     if image_type == 'clean':
         return 'clean_image'
     if image_type == 'noised':
-        if folder_name not in noise_folders:
+        if get_noise_type(folder_name) not in noise_types:
             return None
         return 'noised_image'
     if image_type == 'only':
+        if get_noise_type(folder_name) not in noise_types:
+            return None 
         return 'only_noise'
 
-def make_dataset_table(path_to_data, noise_folders, path_to_csv_file):
+def make_dataset_table(path_to_data, noise_types, path_to_csv_file):
     """Dataset csv table creating."""
     data = np.empty((0, 2))
     for folder_name in os.listdir(path_to_data):
-        label = get_label(folder_name, noise_folders)
+        label = get_label(folder_name, noise_types)
         if label is None:
             continue
         
