@@ -200,7 +200,7 @@ def main(argv):
         train_test_split(PATH_TO_DATASET_TABLE, test_size=0.2)
 
         # dataset and dataloader creating
-        np.random.seed(0)
+        torch.manual_seed(0)
         transforms = [Compose([RandomHorizontalFlip(p=1.0), ToTensor()]),
                       Compose([RandomVerticalFlip(p=1.0), ToTensor()]),
                       Compose([ColorJitter(hue=0.5), ToTensor()])]
@@ -249,7 +249,6 @@ def main(argv):
         test_model(model, test_dataset)
         
     print('process completed: OK')
-#     os.system("pause")
 
 if __name__ == "__main__":
     main(sys.argv[1:])
