@@ -83,14 +83,25 @@ class decoder(torch.nn.Module):
         x = self.conv(x)
         return x
 
-class autoencoder(torch.nn.Module):
-    def __init__(self, input_channels, output_channels):
-        super(autoencoder, self).__init__()
+class AE(torch.nn.Module):
+    def __init__(self, input_channels, output_channels, latent_clean_size=0.9):
+        super(AE, self).__init__()
         
         self.encoder = encoder(input_channels)
         self.decoder = decoder()
-
+        self.latent_clean_size = latent_clean_size
+    
     def forward(self, x):
-        x = self.encoder(x)
-        x = self.decoder(x)
-        return x
+        """
+        Here we take image and return 3 tensors:
+        (first num_components of latent representation,
+        last n-num_components of latent representation,
+        decoder output)
+
+        :param x: torch.tensor, (batch_size, x_dim)
+        :return: torch.tensor, (batch_size, x_dim)
+        """
+        x_latent = self.encoder(x)
+        x_out = self.decoder(x_latent)
+        num_components = int(self.latent_clean_size * len(x_latent[0, 0, 0, :]))
+        return (x_latent[..., :num_components], x_latent[..., num_components:], x_out)

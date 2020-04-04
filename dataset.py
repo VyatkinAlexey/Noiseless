@@ -8,7 +8,6 @@ from utils import get_frame
 
 class DenoisingDataset(Dataset):
     """Class for torch Dataset forming."""
-
     def __init__(self, dataset, 
                        image_size, frame_size, overlay_size,
                        phase='train', transform=None):
@@ -25,19 +24,15 @@ class DenoisingDataset(Dataset):
         frame_index = index % self.frames_number
         
         path_to_image = self.dataset.iloc[image_index]['image']
-        path_to_label = self.dataset.iloc[image_index]['label']
-        
         image = get_frame(np.array(Image.open(path_to_image).resize(self.image_size)),
                           frame_size=self.frame_size, overlay_size=self.overlay_size,
                           index=frame_index)
         
-        label = get_frame(np.array(Image.open(path_to_label).resize(self.image_size)),
-                          frame_size=self.frame_size, overlay_size=self.overlay_size,
-                          index=frame_index)
-
-        np.random.seed(0)
         if self.do_transform():
-            return self.transform((image, label))
+            image = self.transform(image)
+        
+        label = self.dataset.iloc[image_index]['label']
+        
         return (image, label)
 
     def __len__(self):
