@@ -173,13 +173,13 @@ def train_model(model, data_loader,
         
     return model
 
-def test_model(model, dataset):
+def test_model(model, dataset, path_to_results):
     for image_number in tqdm(range(len(dataset))):
         path_to_image = dataset.iloc[image_number]['image']
         image = Image.open(path_to_image) # PIL Image
         np_image = np.array(image) # numpy array from PIL Image
         
-        path_to_save = os.path.join(PATH_TO_RESULTS, os.path.basename(path_to_image))
+        path_to_save = os.path.join(path_to_results, os.path.basename(path_to_image))
         save_result(model, np_image, FRAME_SIZE, OVERLAY_SIZE, path_to_save, figsize=(16, 9))
 
 def main(argv):
@@ -244,9 +244,10 @@ def main(argv):
         test_dataset = dataset[dataset['phase']=='test']
 
         # model testing and results saving
-        if not os.path.exists(PATH_TO_RESULTS):
-            os.makedirs(PATH_TO_RESULTS)
-        test_model(model, test_dataset)
+        path_to_results = PATH_TO_RESULTS + '_{}'.format('_'.join([str(elem) for elem in NOISE_TYPES]))
+        if not os.path.exists(path_to_results):
+            os.makedirs(path_to_results)
+        test_model(model, test_dataset, path_to_results)
         
     print('process completed: OK')
 
