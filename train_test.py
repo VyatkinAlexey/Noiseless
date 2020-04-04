@@ -20,7 +20,6 @@ from utils import save_result
 
 PATH_TO_DATA = './data'
 PATH_TO_DATASET_TABLE = './dataset.csv'
-PATH_TO_MODEL = './model.pth'
 PATH_TO_RESULTS = './results'
 
 TRAIN = False
@@ -41,7 +40,6 @@ DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 def arguments_parsing(argv):
     train = TRAIN
-    test = TEST
     noise_types = NOISE_TYPES
     image_size = IMAGE_SIZE
     frame_size = FRAME_SIZE
@@ -49,6 +47,7 @@ def arguments_parsing(argv):
     latent_clean_size = LATENT_CLEAN_SIZE
     batch_size = BATCH_SIZE
     epochs = EPOCHS
+    test = TEST
     try:
         opts, args = getopt.getopt(argv, "h", ["train=", "noise_types=",
                                                "image_size=", "frame_size=", "overlay_size=",
@@ -232,13 +231,15 @@ def main(argv):
                             device=DEVICE)
 
         # model saving
-        torch.save(model, PATH_TO_MODEL)
+        path_to_model = './model' + '_{}'.format('_'.join([str(elem) for elem in NOISE_TYPES])) + '.pth'
+        torch.save(model, path_to_model)
     
     if TEST:
         print('model testing...')
         
         # model loading
-        model = torch.load(PATH_TO_MODEL)
+        path_to_model = './model' + '_{}'.format('_'.join([str(elem) for elem in NOISE_TYPES])) + '.pth'
+        model = torch.load(path_to_model)
 
         dataset=pd.read_csv(PATH_TO_DATASET_TABLE)
         test_dataset = dataset[dataset['phase']=='test']
