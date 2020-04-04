@@ -150,6 +150,8 @@ def plot_glued_image(frames, overlay_mask, overlay_size, figsize=(16, 9)):
 
 
 def CountPlot(latent_vector, eps=1e-3):
+	"""Plot histogram of zero/non-zero elements for latent vector"""
     binary_vector = np.array(["Non-zero" if abs(value) > eps else "Close to zero" for value in latent_vector])
     binary_df = pd.DataFrame(columns=["zero_prox"], data=binary_vector)
-    sns.countplot(x="zero_prox", data=binary_df)
+    ax = sns.countplot(x="zero_prox", data=binary_df)
+    ax.set(xlabel="latent vector components values")
