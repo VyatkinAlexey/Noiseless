@@ -1,0 +1,7 @@
+image,label,phase
+./data_for_visualization/data\clean\I04.PNG,clean_image,train
+./data_for_visualization/data\clean\I15.PNG,clean_image,test
+./data_for_visualization/data\noised_1\I04_01_4.PNG,noised_image,train
+./data_for_visualization/data\noised_1\I15_01_4.PNG,noised_image,test
+./data_for_visualization/data\only_noise\noise04_01_4..PNG,only_noise,train
+./data_for_visualization/data\only_noise\noise15_01_4..PNG,only_noise,test
