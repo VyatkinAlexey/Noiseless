@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 import torch
+import seaborn as sns
 
 from PIL import Image
 from conversion_transforms import _ToTensor, _ToNumpy
@@ -146,3 +147,9 @@ def plot_glued_image(frames, overlay_mask, overlay_size, figsize=(16, 9)):
     """Plotting glued image from frames list ([numpy.ndarray, ...]) and overlay mask."""
     plt.figure(figsize=figsize)
     plt.imshow(gluing(frames, overlay_mask, overlay_size));
+
+
+def CountPlot(latent_vector, eps=1e-3):
+    binary_vector = np.array(["Non-zero" if abs(value) > eps else "Close to zero" for value in latent_vector])
+    binary_df = pd.DataFrame(columns=["zero_prox"], data=binary_vector)
+    sns.countplot(x="zero_prox", data=binary_df)
