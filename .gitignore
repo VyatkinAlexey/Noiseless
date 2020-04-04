@@ -1,2 +1,10 @@
+# Local files
 local/*
+
 data/*
+
+# Pytorch models
+*.pth
+
+# Predictions of trained model
+results*
