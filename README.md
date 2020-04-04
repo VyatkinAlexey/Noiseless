@@ -16,11 +16,11 @@ To expand the set of distorted images you can apply our custom gaussian noise or
 Example of usage:
 
 ```
-./gaussian_noise_overlay.py --path_to_clean_images=<str> --path_to_corrupted_images=<str> [--noise_type=<int>]
+python gaussian_noise_overlay.py --path_to_clean_images=<str> --path_to_corrupted_images=<str> [--noise_type=<int>]
 ```
 
 ```
-./erasing_noise_overlay.py --path_to_clean_images=<str> --path_to_corrupted_images=<str> [--noise_type=<int>]
+python erasing_noise_overlay.py --path_to_clean_images=<str> --path_to_corrupted_images=<str> [--noise_type=<int>]
 ```
 
 
@@ -47,7 +47,7 @@ Such structure can be generated via our script ```data_splitting.py```  in the f
 Example usage:
 
 ```
-./data_splitting.py --path_to_corrupted=<str> --path_to_reference=<str> 
+python data_splitting.py --path_to_corrupted=<str> --path_to_reference=<str> 
 --path_for_processed=<str> [--num_noises=<int> --noise_level=<int>]
 ```
 
@@ -66,5 +66,6 @@ python train_test.py -h
 The example of usage:
 
 ```
-python ./train_test.py --train=True --noise_types='1, 2' --image_size='512, 384' --frame_size='64, 64' --overlay_size='5, 5' --latent_clean_size=0.9 --batch_size=4 --epochs=20 --test=True
+
+python ./train_test.py --train=True --noise_types="1, 2" --image_size="512, 384" --frame_size="64, 64" --overlay_size="5, 5" --latent_clean_size=0.9 --batch_size=4 --epochs=20 --test=True
 ```
