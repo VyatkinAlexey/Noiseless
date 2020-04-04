@@ -20,14 +20,14 @@ def arguments_parsing(argv):
         opts, args = getopt.getopt(argv, "h", ["path_to_corrupted=", "path_to_reference=",
                                                "path_for_processed=", "num_noises=", "noise_level="])
     except getopt.GetoptError:
-        print("./train_test.py --path_to_corrupted=<str>"+
+        print("./DataSplitting.py --path_to_corrupted=<str>"+
               "--path_to_reference=<str> --path_for_processed=<str> [--num_noises=<int> "+
               "--noise_level=<int>]")
         sys.exit(2)
     
     for opt, arg in opts:
         if opt == '-h':
-            print("./train_test.py --path_to_corrupted=<str>"+
+            print("./DataSplitting.py --path_to_corrupted=<str>"+
               "--path_to_reference=<str> --path_for_processed=<str> [--num_noises=<int> "+
               "--noise_level=<int>]")
             sys.exit()
