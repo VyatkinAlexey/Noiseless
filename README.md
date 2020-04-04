@@ -3,24 +3,55 @@ Project for denoising images
 
 ## Dataset decription
 
-For the purposes of current project [Natural Image Noise Dataset](https://commons.wikimedia.org/wiki/Natural_Image_Noise_Dataset) was chosen.
+For the purposes of current project [TAMPERE IMAGE DATABASE 2008]( http://www.ponomarenko.info/tid2008.htm ) was chosen. It has 25 reference images (clean) and 1700 corrupted images (each reference image is corrupted with 17 types of noise, each noise has 4 levels of strength).
 
 ### How to download dataset
 
-In order to obtain dataset (which is free, non-commercial), one can use `scripts/download.py`,
-which is the property of aforementioned project.
+In order to obtain dataset, one can use the [link](http://www.ponomarenko.info/tid/tid2008.rar)
 
-The example of usage:
+### How to add our custom noise
 
-```
-python download.py --use_wget --target_dir DESTINATION_DIR
-```
+To expand the set of distorted images you can apply our custom gaussian noise or random erasing noise. For this purpose we have ```gaussian_noise_overlay.py``` and ```erasing_noise_overlay.py```  in the folder ```./scripts/```.
 
-In order to get full description of flags one can use the command:
+Example of usage:
 
 ```
-python download.py -h
+./gaussian_noise_overlay.py --path_to_clean_images=<str> --path_to_corrupted_images=<str> [--noise_type=<int>]
 ```
+
+```
+./erasing_noise_overlay.py --path_to_clean_images=<str> --path_to_corrupted_images=<str> [--noise_type=<int>]
+```
+
+
+
+### How to create folders structure necessary for training our model
+
+To train a model we need to have the following data structure:
+
+```
+data
+│   ├───clean
+│   ├───noised_{i}
+│   └───only_noise_{i}
+```
+
+```data/```
+
+- ```clean/``` - folder with reference images
+- ```noised_{i}/``` -  folder with noised images, where "i" is the type of noise (1 to 19 in case you use 17 noises from the initial dataset and 2 our custom noises)
+- ```only_noise_{i}/``` - folder with difference of noised images and reference images, where "i" has the same meaning as above
+
+Such structure can be generated via our script ```data_splitting.py```  in the folder ```./scripts/```.
+
+Example usage:
+
+```
+./data_splitting.py --path_to_corrupted=<str> --path_to_reference=<str> 
+--path_for_processed=<str> [--num_noises=<int> --noise_level=<int>]
+```
+
+
 
 ## How to train model
 
