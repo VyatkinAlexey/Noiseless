@@ -18,9 +18,7 @@ def ProcessDataset(path_to_corrupted, path_to_reference, path_for_processed, num
     """
     path_noised = path_for_processed + "noised/"
     path_clean = path_for_processed + "clean/"
-    path_only_noise = path_for_processed + "only_noise/"
 
-    Path(path_only_noise).mkdir(parents=True, exist_ok=True)
     Path(path_clean).mkdir(parents=True, exist_ok=True)
     for i in range(1, num_noises + 1):
             Path(f"{path_noised[:-1]}_{i}/").mkdir(parents=True, exist_ok=True)
@@ -47,6 +45,8 @@ def ProcessDataset(path_to_corrupted, path_to_reference, path_for_processed, num
 
     for i in range(1, num_noises + 1):
         path_noised = f"{path_for_processed}noised_{i}/"
+        path_only_noise = path_for_processed + f"only_noise_{i}/"
+        Path(path_only_noise).mkdir(parents=True, exist_ok=True)
         CreateNoise(path_noised, path_clean, path_only_noise)
 
 
@@ -191,7 +191,7 @@ def plot_glued_image(frames, overlay_mask, overlay_size, figsize=(16, 9)):
 
 
 def CountPlot(latent_vector, eps=1e-3):
-	"""Plot histogram of zero/non-zero elements for latent vector"""
+    """Plot histogram of zero/non-zero elements for latent vector"""
     binary_vector = np.array(["Non-zero" if abs(value) > eps else "Close to zero" for value in latent_vector])
     binary_df = pd.DataFrame(columns=["zero_prox"], data=binary_vector)
     ax = sns.countplot(x="zero_prox", data=binary_df)
