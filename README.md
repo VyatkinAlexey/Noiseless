@@ -21,3 +21,19 @@ In order to get full description of flags one can use the command:
 ```
 python download.py -h
 ```
+
+## How to train model
+
+In order to train model you should run `train_test.py` script.
+
+The example of usage:
+
+```
+python ./train_test.py --train=True --noise_folders='noised_1' --image_size='512, 384' --frame_size='64, 64' --overlay_size='5, 5' --latent_clean_size=0.9 --batch_size=4 --epochs=20 --test=True
+```
+
+In order to get full description of flags one can use the command:
+
+```
+python train_test.py -h
+```
