@@ -62,18 +62,20 @@ class _Random_Erasing(object):
         return ToPILImage()(RandomErasing(self.p, self.scale, self.ratio, self.value, self.inplace)(tensor))
     
 def noise_overlay(path_to_clean_images, path_to_corrupted_images, noise_type, noise_level):
-    paths_to_images = os.listdir(path_to_clean_images)
-    for path_to_image in paths_to_images:
+    images_names = os.listdir(path_to_clean_images)
+    for image_name in tqdm(images_names):
+        path_to_image = os.path.join(path_to_clean_images, image_name)
         image = _Random_Erasing()(Image.open(path_to_image))
         
-        ext = os.path.splitext(path_to_corrupted_images)[1]
-        path_to_save = os.path.join(os.path.splitext(path_to_corrupted_images)[0],
+        path_to_image = os.path.join(path_to_corrupted_images, image_name)
+        ext = os.path.splitext(path_to_image)[1]
+        path_to_save = os.path.join(os.path.splitext(path_to_image)[0] +  
                                     '_{}_{}'.format(noise_type, noise_level) + ext)
         image.save(path_to_save)
 
 def main(argv):
     path_to_clean_images, path_to_corrupted_images, noise_type = arguments_parsing(argv)
-    noise_overlay(path_to_corrupted, path_to_reference, path_for_processed, noise_type, NOISE_LEVEL)
+    noise_overlay(path_to_clean_images, path_to_corrupted_images, noise_type, NOISE_LEVEL)
 
 if __name__ == "__main__":
     main(sys.argv[1:])
