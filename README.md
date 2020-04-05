@@ -12,7 +12,15 @@ In order to obtain the dataset, one can use this [link to download it (550 mb)](
 This archive should be unpacked. It has the following structure:
 
 ```
-
+├───distorted_images
+├───metrics_values
+├───mos.txt
+├───mos_std.txt
+├───mos_with_names.txt
+├───papers
+├───readme
+└───reference_images
+```
 ```
 
 ### How to add our custom noise (optional)
@@ -27,15 +35,6 @@ python gaussian_noise_overlay.py --path_to_clean_images=<str> --path_to_corrupte
 
 ```
 python erasing_noise_overlay.py --path_to_clean_images=<str> --path_to_corrupted_images=<str> [--noise_type=<int>]
-```
-├───distorted_images
-├───metrics_values
-├───mos.txt
-├───mos_std.txt
-├───mos_with_names.txt
-├───papers
-├───readme
-└───reference_images
 ```
 
 
