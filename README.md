@@ -56,7 +56,14 @@ python data_splitting.py --path_to_corrupted=<str> --path_to_reference=<str>
 
 ### Installation
 
-conda smth
+In order to install all dependencies properly, please use [conda](https://docs.conda.io/en/latest/) enironment.
+All details about the installation `conda` itself could be found via [link](https://docs.conda.io/projects/conda/en/latest/user-guide/install/).
+
+Once `conda` is installed, environment, which is suitable for current repository, could be installed by utilizing command:
+
+```
+conda env create -f environment.yml
+```
 
 
 ### How to train model
