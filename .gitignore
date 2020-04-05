@@ -1,15 +1,19 @@
-*.ipynb_checkpoints/*
-*__pycache__/*
+Notebooks/.ipynb_checkpoints/*
+.ipynb_checkpoints/*
+__pycache__/*
 
 # Local files
 local/*
 
+# data
+Notebooks/dataset.csv
 data/*
 
 # Pytorch models
 *.pth
 
 # Predictions of trained model
+Notebooks/results*
 results*
 
 # Visualization plot
