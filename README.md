@@ -35,7 +35,7 @@ python erasing_noise_overlay.py --path_to_clean_images=<str> --path_to_corrupted
 ├───mos_with_names.txt
 ├───papers
 ├───readme
-├───reference_images
+└───reference_images
 
 
 ### How to create folders structure necessary for training our model
