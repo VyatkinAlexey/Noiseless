@@ -23,7 +23,7 @@ source noiseless_env/bin/activate
 Once environment was activated, one could install all the dependencies utilizing command:
 
 ```
-pip install -r requirements.txt
+pip install -r Noiseless/requirements.txt
 ```
 
 ## Dataset decription
