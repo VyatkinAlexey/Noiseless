@@ -50,7 +50,7 @@ class _Random_Erasing(object):
               If a str of 'random', erasing each pixel with random values.
        inplace: boolean to make this transform inplace. Default set to False.
     """
-    def __init__(self, p=1., scale=(0.01, 0.012), ratio=(0.5, 0.6), value=0, inplace=False):
+    def __init__(self, p=1., scale=(0.01, 0.012), ratio=(0.5, 0.6), value='random', inplace=False):
         self.p = p
         self.scale = scale
         self.ratio = ratio
