@@ -101,6 +101,11 @@ python data_splitting.py --path_to_corrupted=<str> --path_to_reference=<str>
 ```
 
 
+Here, as before, `path_to_clean_images` flag should point to absolute path to `reference_images` folder,
+
+`path_to_corrupted_images` flag should point to absolute path to `distorted_images` folder.
+
+
 ### How to train model
 
 In order to train model you should run `train_test.py` script.
