@@ -45,10 +45,10 @@ class complex_deconv(torch.nn.Module):
 
 
 class encoder(torch.nn.Module):
-    def __init__(self, input_channels=3):
+    def __init__(self, channels=1):
         super(encoder, self).__init__()
         
-        self.complex_conv1 = complex_conv(input_channels, 16)
+        self.complex_conv1 = complex_conv(channels, 16)
         self.pool1 = torch.nn.MaxPool2d(kernel_size=2)
         
         self.complex_conv2 = complex_conv(16, 32)
@@ -68,13 +68,13 @@ class encoder(torch.nn.Module):
         return x
 
 class decoder(torch.nn.Module):
-    def __init__(self):
+    def __init__(self, channels=1):
         super(decoder, self).__init__()
         
         self.unflatten = unflatten()
         self.deconv1 = complex_deconv(1, 32)
         self.deconv2 = complex_deconv(32, 16)
-        self.conv = torch.nn.Conv2d(16, 3, kernel_size=3, padding=1)
+        self.conv = torch.nn.Conv2d(16, channels, kernel_size=3, padding=1)
 
     def forward(self, x):
         x = self.unflatten(x)
@@ -84,11 +84,11 @@ class decoder(torch.nn.Module):
         return x
 
 class AE(torch.nn.Module):
-    def __init__(self, input_channels, output_channels, latent_clean_size=0.9):
+    def __init__(self, channels, latent_clean_size=0.9):
         super(AE, self).__init__()
         
-        self.encoder = encoder(input_channels)
-        self.decoder = decoder()
+        self.encoder = encoder(channels)
+        self.decoder = decoder(channels)
         self.latent_clean_size = latent_clean_size
     
     def forward(self, x):

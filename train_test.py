@@ -27,8 +27,9 @@ TRAIN = False
 NOISE_TYPES = []
 # IMAGE_SIZE = (3840, 2160) # (width, height) Ultra HD 4K
 # IMAGE_SIZE = (1920, 1080) # (width, height) Full HD
-IMAGE_SIZE = (1080, 720) # (width, height) HD
-FRAME_SIZE = (256, 256) # (frame_width, frame_height)
+# IMAGE_SIZE = (1080, 720) # (width, height) HD
+IMAGE_SIZE = (512, 384)
+FRAME_SIZE = (128, 128) # (frame_width, frame_height)
 OVERLAY_SIZE = (5, 5) # (stride_y, stride_x)
 LATENT_CLEAN_SIZE = 0.9
 BATCH_SIZE = 4
@@ -54,18 +55,18 @@ def arguments_parsing(argv):
                                                "latent_clean_size=",
                                                "batch_size=", "epochs=", "test="])
     except getopt.GetoptError:
-        print("./train_test.py --train=<True/False> [--noise_types='1, ...' "+
-              "--image_size='width, height' --frame_size='width, height' --overlay_size='width, height'] "+
+        print("./train_test.py --train=<True/False> --noise_types='1, ...' "+
+              "[--image_size='width, height' --frame_size='width, height' --overlay_size='width, height' "+
               "--latent_clean_size=<float> "+
-              "--batch_size=<int> --epochs=<int> --test=<True/False>")
+              "--batch_size=<int> --epochs=<int>] --test=<True/False>")
         sys.exit(2)
     
     for opt, arg in opts:
         if opt == '-h':
-            print("./train_test.py --train=<True/False> [--noise_types='1, ...' "+
-                  "--image_size='width, height' --frame_size='width, height' --overlay_size='width, height'] "+
+            print("./train_test.py --train=<True/False> --noise_types='1, ...' "+
+                  "[--image_size='width, height' --frame_size='width, height' --overlay_size='width, height' "+
                   "--latent_clean_size=<float> "+
-                  "--batch_size=<int> --epochs=<int> --test=<True/False>")
+                  "--batch_size=<int> --epochs=<int>] --test=<True/False>")
             sys.exit()
         elif opt == "--train":
             if arg == 'False':
@@ -144,28 +145,6 @@ def train_model(model, data_loader,
             running_loss += loss_total.item()
             running_latent_loss += loss_latent.item()
             
-#             # Perform one step of minibatch stochastic gradient descent
-#             optimizer.zero_grad()
-#             model_latent_first, model_latent_last, model_output = model.forward(images)
-#             loss_total = loss(model_output, images)
-            
-#             # loss calculating
-#             if labels[0] == 'clean_image':
-#                 loss_latent = latent_loss(model_latent_last, 
-#                                           torch.zeros(size=model_latent_last.size(), device=device))
-#                 loss_total += loss_latent
-#             elif labels[0] == 'noised_image':
-#                 pass
-#             elif labels[0] == 'only_noise':
-#                 loss_latent = latent_loss(model_latent_first, 
-#                                           torch.zeros(size=model_latent_first.size(), device=device))
-#                 loss_total += loss_latent
- 
-#             loss_total.backward()
-#             optimizer.step()
-        
-#             running_loss += loss_total.item()
-            
         epoch_loss = running_loss / len(data_loader)
         epoch_latent_loss = running_latent_loss / len(data_loader)
         print('Total Loss: {:.4f}, Latent Loss: {:.4f}'.format(epoch_loss, epoch_latent_loss), flush=True)
@@ -175,8 +154,8 @@ def train_model(model, data_loader,
 def test_model(model, dataset, path_to_results):
     for image_number in tqdm(range(len(dataset))):
         path_to_image = dataset.iloc[image_number]['image']
-        image = Image.open(path_to_image) # PIL Image
-        np_image = np.array(image) # numpy array from PIL Image
+        image = Image.open(path_to_image).convert('L') # PIL Image grayscale
+        np_image = np.array(image)[..., np.newaxis] # numpy array from PIL Image
         
         path_to_save = os.path.join(path_to_results, os.path.basename(path_to_image))
         save_result(model, np_image, FRAME_SIZE, OVERLAY_SIZE, path_to_save, figsize=(16, 9))
@@ -220,7 +199,7 @@ def main(argv):
                                   num_workers=0)
 
         # model training
-        model = AE(3, 3, LATENT_CLEAN_SIZE)
+        model = AE(1, LATENT_CLEAN_SIZE)
         loss = SSIMLoss()
         latent_loss = MSELoss()
         optimizer = torch.optim.Adam(model.parameters(), lr=1.0e-3)
@@ -234,11 +213,10 @@ def main(argv):
         path_to_model = './model' + '_{}'.format('_'.join([str(elem) for elem in NOISE_TYPES])) + '.pth'
         torch.save(model, path_to_model)
     
-    if TEST:
-        print('model testing...')
-        
+    if TEST:    
         # model loading
         path_to_model = './model' + '_{}'.format('_'.join([str(elem) for elem in NOISE_TYPES])) + '.pth'
+        print('{} testing...'.format(os.path.basename(path_to_model)))
         model = torch.load(path_to_model)
 
         dataset=pd.read_csv(PATH_TO_DATASET_TABLE)

@@ -31,7 +31,7 @@ def get_label(folder_name, noise_types):
         return 'noised_image'
     if image_type == 'only':
         if get_noise_type(folder_name) not in noise_types:
-            return None 
+            return None
         return 'only_noise'
 
 def make_dataset_table(path_to_data, noise_types, path_to_csv_file):
@@ -83,7 +83,7 @@ def get_frame(image, frame_size, overlay_size, index, overlay_mask=None):
     if overlay_mask is not None:
         overlay_mask[start_x:end_x, start_y:end_y, :] += np.ones((frame_x, frame_y, channels))
         return image[start_x:end_x, start_y:end_y, :], overlay_mask
-    return Image.fromarray(image[start_x:end_x, start_y:end_y, :])
+    return Image.fromarray(image[start_x:end_x, start_y:end_y, :].squeeze(axis=2))
     
 def slicing(image, frame_size=(256, 256), overlay_size=(1, 1)):
     """Slicing image (numpy.ndarray) into frames list."""
@@ -152,8 +152,12 @@ def plot_sliced_image(frames, image_size, frame_size, overlay_size, figsize=(16,
     
     fig, axes = plt.subplots(ncols=columns_number, nrows=rows_number, figsize=figsize)
     for i, ax in enumerate(axes.flat):
-        im = Image.fromarray(frames[i])
-        ax.imshow(im);
+        ax.imshow(frames[i].squeeze(axis=2), 'gray')
+
+def plot_glued_image(frames, overlay_mask, overlay_size, figsize=(16, 9)):
+    """Plotting glued image from frames list ([numpy.ndarray, ...]) and overlay mask."""
+    plt.figure(figsize=figsize)
+    plt.imshow(gluing(frames, overlay_mask, overlay_size).squeeze(axis=2), 'gray');
 
 def get_predicted_frames(model, frames):
     """Prediction of frames list ([numpy.ndarray, ...]) via model."""
@@ -164,14 +168,10 @@ def get_predicted_frames(model, frames):
         with torch.set_grad_enabled(False):
             tensor_frame = ToTensor()(np.array(frame)).unsqueeze(0)/1.0
             predicted_frame = model.decoder(torch.cat((model(tensor_frame)[0], 0*model(tensor_frame)[1]), dim=3)).squeeze()
-        predicted_frames.append(ToNumpy()(predicted_frame))
+            
+        predicted_frames.append(ToNumpy()(predicted_frame.unsqueeze(0)))
     
     return predicted_frames
-        
-def plot_glued_image(frames, overlay_mask, overlay_size, figsize=(16, 9)):
-    """Plotting glued image from frames list ([numpy.ndarray, ...]) and overlay mask."""
-    plt.figure(figsize=figsize)
-    plt.imshow(gluing(frames, overlay_mask, overlay_size));
 
 def save_result(model, image, frame_size, overlay_size, path_to_save, figsize=(16, 9)):
     frames, overlay_mask = slicing(image, frame_size, overlay_size)
@@ -179,7 +179,7 @@ def save_result(model, image, frame_size, overlay_size, path_to_save, figsize=(1
     predicted_image = gluing(predicted_frames, overlay_mask, overlay_size)
     
     fig, axes = plt.subplots(ncols=2, nrows=1, figsize=figsize)
-    axes[0].imshow(Image.fromarray(image))
-    axes[1].imshow(Image.fromarray(predicted_image))
+    axes[0].imshow(Image.fromarray(image.squeeze(axis=2)), 'gray')
+    axes[1].imshow(Image.fromarray(predicted_image.squeeze(axis=2)), 'gray')
     
-    fig.savefig(path_to_save)
+    fig.savefig(path_to_save, bbox_inches='tight')

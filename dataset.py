@@ -24,16 +24,17 @@ class DenoisingDataset(Dataset):
         frame_index = index % self.frames_number
         
         path_to_image = self.dataset.iloc[image_index]['image']
-        image = get_frame(np.array(Image.open(path_to_image).resize(self.image_size)),
+        np_image = np.array(Image.open(path_to_image).convert('L').resize(self.image_size))
+        frame = get_frame(np_image[..., np.newaxis],
                           frame_size=self.frame_size, overlay_size=self.overlay_size,
                           index=frame_index)
         
         if self.do_transform():
-            image = self.transform(image)
+            frame = self.transform(frame)
         
         label = self.dataset.iloc[image_index]['label']
         
-        return (image, label)
+        return (frame, label)
 
     def __len__(self):
         return len(self.dataset) * self.frames_number
