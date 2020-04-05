@@ -1,6 +1,31 @@
 # Noiseless
 Project for denoising images
 
+## Installation
+
+In order to install all dependencies properly, please use `virtualenv` python package.
+It can be done by command:
+
+```
+sudo pip3 install virtualenv
+```
+
+Once `virtualenv` is installed, please create virtual environment by utilizing command:
+
+```
+python3 -m venv noiseless_env
+```
+Then activate it by command:
+
+```
+source noiseless_env/bin/activate
+```
+Once environment was activated, one could install all the dependencies utilizing command:
+
+```
+pip install -r requirements.txt
+```
+
 ## Dataset decription
 
 For the purposes of current project [TAMPERE IMAGE DATABASE 2008]( http://www.ponomarenko.info/tid2008.htm ) was chosen. It has 25 reference images (clean) and 1700 corrupted images (each reference image is corrupted with 17 types of noise, each noise has 4 levels of strength).
@@ -71,20 +96,6 @@ Example usage:
 ```
 python data_splitting.py --path_to_corrupted=<str> --path_to_reference=<str> 
 --path_for_processed=<str> [--num_noises=<int> --noise_level=<int>]
-```
-
-
-## Model installation and usage
-
-### Installation
-
-In order to install all dependencies properly, please use [conda](https://docs.conda.io/en/latest/) enironment.
-All details about the installation `conda` itself could be found via [link](https://docs.conda.io/projects/conda/en/latest/user-guide/install/).
-
-Once `conda` is installed, environment, which is suitable for current repository, could be installed by utilizing command:
-
-```
-conda env create -f environment.yml
 ```
 
 
