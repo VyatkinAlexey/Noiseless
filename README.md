@@ -9,6 +9,12 @@ For the purposes of current project [TAMPERE IMAGE DATABASE 2008]( http://www.po
 
 In order to obtain the dataset, one can use this [link to download it (550 mb)](http://www.ponomarenko.info/tid/tid2008.rar).
 
+This archive should be unpacked. It has the following structure:
+
+```
+
+```
+
 ### How to add our custom noise (optional)
 
 To expand the set of distorted images you can apply our custom gaussian noise or random erasing noise. For this purpose we have ```gaussian_noise_overlay.py``` and ```erasing_noise_overlay.py```  in the folder ```./scripts/```.
@@ -22,7 +28,14 @@ python gaussian_noise_overlay.py --path_to_clean_images=<str> --path_to_corrupte
 ```
 python erasing_noise_overlay.py --path_to_clean_images=<str> --path_to_corrupted_images=<str> [--noise_type=<int>]
 ```
-
+|---distorted_images
+|---metrics_values
+|---mos.txt
+|---mos_std.txt
+|---mos_with_names.txt
+|---papers
+|---readme
+|---reference_images
 
 
 ### How to create folders structure necessary for training our model
