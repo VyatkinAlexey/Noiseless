@@ -42,8 +42,9 @@ python gaussian_noise_overlay.py --path_to_clean_images=<str> --path_to_corrupte
 python erasing_noise_overlay.py --path_to_clean_images=<str> --path_to_corrupted_images=<str> [--noise_type=<int>]
 ```
 
-Here `path_to_clean_images` flag should point to `reference_images` folder,
-`path_to_corrupted_images` flag should point to `distorted_images` folder.
+Here `path_to_clean_images` flag should point to absolute path to `reference_images` folder,
+
+`path_to_corrupted_images` flag should point to absolute path to `distorted_images` folder.
 
 
 ### How to create folders structure necessary for training our model
