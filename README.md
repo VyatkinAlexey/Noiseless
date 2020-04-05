@@ -52,8 +52,14 @@ python data_splitting.py --path_to_corrupted=<str> --path_to_reference=<str>
 ```
 
 
+## Model installation and usgae
 
-## How to train model
+### Installation
+
+conda smth
+
+
+### How to train model
 
 In order to train model you should run `train_test.py` script.
 
