@@ -9,7 +9,7 @@ For the purposes of current project [TAMPERE IMAGE DATABASE 2008]( http://www.po
 
 In order to obtain the dataset, one can use this [link to download it (550 mb)](http://www.ponomarenko.info/tid/tid2008.rar).
 
-### How to add our custom noise
+### How to add our custom noise (optional)
 
 To expand the set of distorted images you can apply our custom gaussian noise or random erasing noise. For this purpose we have ```gaussian_noise_overlay.py``` and ```erasing_noise_overlay.py```  in the folder ```./scripts/```.
 
