@@ -56,7 +56,7 @@ def arguments_parsing(argv):
                                                "batch_size=", "epochs=", "test="])
     except getopt.GetoptError:
         print("./train_test.py --train=<True/False> --noise_types='1, ...' "+
-              "[--image_size='width, height' --frame_size='width, height' --overlay_size='width, height' "+
+              "[--image_size='width, height' --frame_size='width, width' --overlay_size='width, width' "+
               "--latent_clean_size=<float> "+
               "--batch_size=<int> --epochs=<int>] --test=<True/False>")
         sys.exit(2)
@@ -64,7 +64,7 @@ def arguments_parsing(argv):
     for opt, arg in opts:
         if opt == '-h':
             print("./train_test.py --train=<True/False> --noise_types='1, ...' "+
-                  "[--image_size='width, height' --frame_size='width, height' --overlay_size='width, height' "+
+                  "[--image_size='width, height' --frame_size='width, width' --overlay_size='width, width' "+
                   "--latent_clean_size=<float> "+
                   "--batch_size=<int> --epochs=<int>] --test=<True/False>")
             sys.exit()
