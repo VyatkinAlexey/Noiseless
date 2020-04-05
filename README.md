@@ -10,7 +10,7 @@ It can be done by command:
 sudo pip3 install virtualenv
 ```
 
-Once `virtualenv` is installed, please create virtual environment by utilizing command:
+Once `virtualenv` is installed, please create virtual environment near by utilizing command:
 
 ```
 python3 -m venv noiseless_env
@@ -23,8 +23,10 @@ source noiseless_env/bin/activate
 Once environment was activated, one could install all the dependencies utilizing command:
 
 ```
-pip install -r Noiseless/requirements.txt
+pip install -r PATH_TO_CLONED_REPOSITORY/requirements.txt
 ```
+
+Where `PATH_TO_CLONED_REPOSITORY` is the path to current cloned repository.
 
 ## Dataset decription
 
