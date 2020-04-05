@@ -21,11 +21,16 @@ This archive should be unpacked. It has the following structure:
 ├───readme
 └───reference_images
 ```
+But we are interested in two folders: 
+```
+reference_images
 
+distorted_images
+```
 
 ### How to add our custom noise (optional)
 
-To expand the set of distorted images you can apply our custom gaussian noise or random erasing noise. For this purpose we have `gaussian_noise_overlay.py` and `erasing_noise_overlay.py`  in the folder `./scripts/`.
+To expand the set of distorted images you can apply our custom gaussian noise or random erasing noise. For this purpose we have `gaussian_noise_overlay.py` and `erasing_noise_overlay.py`  in the folder `scripts`.
 
 Example of usage:
 
@@ -36,6 +41,9 @@ python gaussian_noise_overlay.py --path_to_clean_images=<str> --path_to_corrupte
 ```
 python erasing_noise_overlay.py --path_to_clean_images=<str> --path_to_corrupted_images=<str> [--noise_type=<int>]
 ```
+
+Here `path_to_clean_images` flag should point to `reference_images` folder,
+`path_to_corrupted_images` flag should point to `distorted_images` folder.
 
 
 ### How to create folders structure necessary for training our model
@@ -65,7 +73,7 @@ python data_splitting.py --path_to_corrupted=<str> --path_to_reference=<str>
 ```
 
 
-## Model installation and usage
+## Model installation and usgae
 
 ### Installation
 
@@ -93,5 +101,5 @@ The example of usage:
 
 ```
 
-python ./train_test.py --train=True --noise_types="1, 2" --image_size="512, 384" --frame_size="128, 128" --overlay_size="5, 5" --latent_clean_size=0.9 --batch_size=4 --epochs=20 --test=True
+python ./train_test.py --train=True --noise_types="1, 2" --image_size="512, 384" --frame_size="64, 64" --overlay_size="5, 5" --latent_clean_size=0.9 --batch_size=4 --epochs=20 --test=True
 ```
