@@ -7,7 +7,7 @@ For the purposes of current project [TAMPERE IMAGE DATABASE 2008]( http://www.po
 
 ### How to download dataset
 
-In order to obtain dataset, one can use the [link](http://www.ponomarenko.info/tid/tid2008.rar)
+In order to obtain the dataset, one can use this [link to download it (550 mb)](http://www.ponomarenko.info/tid/tid2008.rar).
 
 ### How to add our custom noise
 

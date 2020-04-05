@@ -8,3 +8,6 @@ data/*
 
 # Predictions of trained model
 results*
+
+# Visualization plot
+Notebooks/data_for_visualization/plots/*
