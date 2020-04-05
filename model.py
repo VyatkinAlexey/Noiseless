@@ -1,11 +1,7 @@
 import torch
 import numpy as np
 
-class flatten(torch.nn.Module):
-#     def __init__(self, flatten_channels):
-#         super(flatten, self).__init__()
-#         self.flatten_channels = flatten_channels
-        
+class flatten(torch.nn.Module): 
     def forward(self, x):
         batch_size = x.size(0)
         return x.view(batch_size, 1, 1, -1)
@@ -55,7 +51,6 @@ class encoder(torch.nn.Module):
         self.pool2 = torch.nn.MaxPool2d(kernel_size=2)
         
         self.complex_conv3 = complex_conv(32, 1)
-#         self.conv1 = torch.nn.Conv2d(1, 1, kernel_size=3, padding=1)
         self.flatten = flatten()
         
     def forward(self, x):

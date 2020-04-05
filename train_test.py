@@ -181,7 +181,7 @@ def main(argv):
         torch.manual_seed(0)
         transforms = [Compose([RandomHorizontalFlip(p=1.0), ToTensor()]),
                       Compose([RandomVerticalFlip(p=1.0), ToTensor()]),
-                      Compose([ColorJitter(hue=0.5), ToTensor()])]
+                      Compose([ColorJitter(brightness=(0.9, 2.0), contrast=(0.9, 2.0)), ToTensor()])]
 
         train_dataset = []
         for transform in transforms:
