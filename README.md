@@ -21,11 +21,11 @@ This archive should be unpacked. It has the following structure:
 ├───readme
 └───reference_images
 ```
-```
+
 
 ### How to add our custom noise (optional)
 
-To expand the set of distorted images you can apply our custom gaussian noise or random erasing noise. For this purpose we have ```gaussian_noise_overlay.py``` and ```erasing_noise_overlay.py```  in the folder ```./scripts/```.
+To expand the set of distorted images you can apply our custom gaussian noise or random erasing noise. For this purpose we have `gaussian_noise_overlay.py` and `erasing_noise_overlay.py`  in the folder `./scripts/`.
 
 Example of usage:
 
