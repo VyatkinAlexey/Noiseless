@@ -65,7 +65,7 @@ python data_splitting.py --path_to_corrupted=<str> --path_to_reference=<str>
 ```
 
 
-## Model installation and usgae
+## Model installation and usage
 
 ### Installation
 
