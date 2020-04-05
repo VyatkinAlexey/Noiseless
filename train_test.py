@@ -15,7 +15,7 @@ from utils import make_dataset_table, train_test_split
 from dataset import DenoisingDataset
 from loss import SSIMLoss, MSELoss
 from model import AE
-from utils import save_result
+from utils import slicing, save_result
 
 
 PATH_TO_DATA = './data'
@@ -150,10 +150,48 @@ def train_model(model, data_loader,
         print('Total Loss: {:.4f}, Latent Loss: {:.4f}'.format(epoch_loss, epoch_latent_loss), flush=True)
         
     return model
-
-def test_model(model, dataset, path_to_results):
+    
+def test_evaluation(model, dataset,
+                    loss, latent_loss,
+                    device=DEVICE):
+    running_loss = 0.0
+    running_latent_loss = 0.0
     for image_number in tqdm(range(len(dataset))):
         path_to_image = dataset.iloc[image_number]['image']
+        image = Image.open(path_to_image).convert('L') # PIL Image grayscale
+        np_image = np.array(image)[..., np.newaxis] # numpy array from PIL Image
+        
+        # test loss calculating
+        images = torch.stack([ToTensor()(frame) for frame in slicing(np_image, FRAME_SIZE, OVERLAY_SIZE)[0]])
+        images = images.to(DEVICE)
+        labels = [dataset.iloc[image_number]['label']] * images.shape[0]
+        
+        model.eval()
+        model_latent_first, model_latent_last, model_output = model.forward(images)
+        loss_total = loss(model_output, images)
+
+        # now we will create tensor to compare with latent output
+        model_latent = torch.cat((model_latent_first, model_latent_last), dim=3)
+
+        model_latent_right = model_latent.detach().clone()
+        model_latent_right = zero_corresp_rows(model_latent_right, labels, len(model_latent_first[0, 0, 0, :]))
+
+        # finally combine losses
+        loss_latent = latent_loss(model_latent, model_latent_right)
+        loss_total += loss_latent
+
+        running_loss += loss_total.item()
+        running_latent_loss += loss_latent.item()
+    
+    test_total_loss = running_loss / len(dataset)
+    test_latent_loss = running_latent_loss / len(dataset)
+    print('Test Total Loss: {:.4f}, Test Latent Loss: {:.4f}'.format(test_total_loss, test_latent_loss), flush=True)
+    
+def test_model(model, dataset, path_to_results):
+    running_loss = 0.0
+    for image_number in tqdm(range(len(dataset))):
+        path_to_image = dataset.iloc[image_number]['image']
+        
         image = Image.open(path_to_image).convert('L') # PIL Image grayscale
         np_image = np.array(image)[..., np.newaxis] # numpy array from PIL Image
         
@@ -216,16 +254,25 @@ def main(argv):
     if TEST:    
         # model loading
         path_to_model = './model' + '_{}'.format('_'.join([str(elem) for elem in NOISE_TYPES])) + '.pth'
-        print('{} testing...'.format(os.path.basename(path_to_model)))
+        print('{} testing...\n'.format(os.path.basename(path_to_model)))
         model = torch.load(path_to_model)
 
         dataset=pd.read_csv(PATH_TO_DATASET_TABLE)
         test_dataset = dataset[dataset['phase']=='test']
 
         # model testing and results saving
+        loss = SSIMLoss()
+        latent_loss = MSELoss()
+        print('{} evaluation on test images'.format(os.path.basename(path_to_model)))
+        test_evaluation(model, test_dataset,
+                        loss, latent_loss,
+                        device=DEVICE)
+        print()
+        
         path_to_results = PATH_TO_RESULTS + '_{}'.format('_'.join([str(elem) for elem in NOISE_TYPES]))
         if not os.path.exists(path_to_results):
             os.makedirs(path_to_results)
+        print('{} running and results saving'.format(os.path.basename(path_to_model)))
         test_model(model, test_dataset, path_to_results)
         
     print('process completed: OK')
