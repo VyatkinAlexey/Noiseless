@@ -107,12 +107,19 @@ Here, as before, `path_to_reference` flag should point to absolute path to `refe
 
 `path_to_corrupted` flag should point to absolute path to `distorted_images` folder.
 
+## Model
+
+## Autoencoder mode
+
+If you want to test architecture and learn model like classical autoencoder, you may use notebook 
+`TestAutoencoderStructure.ipynb`, which is inside `Notebook` folder.
+
 
 ### How to train model
 
 In order to train model you should run `train_test.py` script.
 
-In order to get full description of flags one can use the command:
+To get full description of flags one can use the command:
 
 ```
 python train_test.py -h
