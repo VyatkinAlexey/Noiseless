@@ -145,6 +145,8 @@ Then we trained Autoencoder with additional loss in latent space in order to sep
 
 ![19_noises](imgs/19_noises.png)
 
+For best fitted noise type training procedure was repeated with increased number of epochs, losses of this process are presented on the image below.
+
 Model performance on the best fitted noise is presented on the image below.
 
 ![hor_lines](imgs/black_horizontal_lines.PNG)
