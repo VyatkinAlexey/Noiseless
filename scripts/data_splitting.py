@@ -62,25 +62,25 @@ def process_dataset(path_to_corrupted, path_to_reference, path_for_processed, nu
         if int(noise_type[0]) == 0:
             noise_type = noise_type[1:]
         current_noise_level = noised_name.split("_")[2][:-4]
-        noised = cv.imread(path_to_corrupted + noised_name)
+        noised = cv.imread(os.path.join(path_to_corrupted, noised_name))
         if int(current_noise_level) == 4:
-            cv.imwrite(f"{path_noised[:-1]}_{noise_type}/" + noised_name[:-4] + ".PNG", np.int32(noised))
+            cv.imwrite(os.path.join(f"{path_noised[:-1]}_{noise_type}", noised_name[:-4]) + ".PNG", np.int32(noised))
     for clean_name in os.listdir(path_to_reference):
-        clean = cv.imread(path_to_reference + clean_name)
-        cv.imwrite(path_clean + clean_name[:-4] + ".PNG", np.int32(clean))
+        clean = cv.imread(os.path.join(path_to_reference, clean_name))
+        cv.imwrite(os.path.join(path_clean, clean_name[:-4] + ".PNG"), np.int32(clean))
 
     def create_noise(path_noised, path_clean, path_only_noise):
         listdir_noised = os.listdir(path_noised)
         listdir_clean = os.listdir(path_clean)
         for idx, noised_name in enumerate(listdir_noised):
-            noised = np.int32(cv.imread(path_noised + noised_name))
-            clean = np.int32(cv.imread(path_clean + listdir_clean[idx]))
+            noised = np.int32(cv.imread(os.path.join(path_noised, noised_name)))
+            clean = np.int32(cv.imread(os.path.join(path_clean, listdir_clean[idx])))
             noise = noised - clean
-            cv.imwrite(path_only_noise + "noise" + noised_name[-11:-4] + ".PNG", noise)
+            cv.imwrite(os.path.join(path_only_noise, "noise" + noised_name[-11:-4] + ".PNG"), noise)
 
     for i in tqdm(range(1, num_noises + 1)):
-        path_noised = f"{path_for_processed}noised_{i}/"
-        path_only_noise = path_for_processed + f"only_noise_{i}/"
+        path_noised = os.path.join(path_for_processed, f"noised_{i}")
+        path_only_noise = os.path.join(path_for_processed, f"only_noise_{i}")
         # Path(path_only_noise).mkdir(parents=True, exist_ok=True)
         os.makedirs(path_only_noise, exist_ok=True)
         create_noise(path_noised, path_clean, path_only_noise)
