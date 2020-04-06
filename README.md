@@ -73,6 +73,7 @@ Here `path_to_clean_images` flag should point to absolute path to `reference_ima
 
 `path_to_corrupted_images` flag should point to absolute path to `distorted_images` folder.
 
+If you will use all 17 noise types, please specify `noise_type` as 18 and 19, respectively. If you will use `n` noise types, please specify `noise_type` as `n+1` and `n+2`, respectively.
 
 ### How to create folders structure necessary for training our model
 
@@ -91,7 +92,8 @@ data
 - ```noised_{i}/``` -  folder with noised images, where "i" is the type of noise (1 to 19 in case you use 17 noises from the initial dataset and 2 our custom noises)
 - ```only_noise_{i}/``` - folder with difference of noised images and reference images, where "i" has the same meaning as above
 
-Such structure can be generated via our script ```data_splitting.py```  in the folder ```./scripts/```.
+Such structure can be generated via our script ```data_splitting.py```  in the folder ```./scripts/```. 
+**Folder `data` should be in the repository folder**.
 
 Example usage:
 
@@ -105,12 +107,19 @@ Here, as before, `path_to_reference` flag should point to absolute path to `refe
 
 `path_to_corrupted` flag should point to absolute path to `distorted_images` folder.
 
+## Model
+
+### Autoencoder mode
+
+If you want to test architecture and learn model like classical autoencoder, you may use notebook 
+`TestAutoencoderStructure.ipynb`, which is inside `Notebook` folder.
+
 
 ### How to train model
 
 In order to train model you should run `train_test.py` script.
 
-In order to get full description of flags one can use the command:
+To get full description of flags one can use the command:
 
 ```
 python train_test.py -h
@@ -119,6 +128,11 @@ python train_test.py -h
 The example of usage:
 
 ```
-
 python ./train_test.py --train=True --noise_types="1, 2" --image_size="512, 384" --frame_size="64, 64" --overlay_size="5, 5" --latent_clean_size=0.9 --batch_size=4 --epochs=20 --test=True
 ```
+
+## Results
+
+### Pure Autoencoder
+
+First of all, we trained our model like usual autoencoder. The result of its performance is shown on the picture below.
