@@ -138,3 +138,8 @@ python ./train_test.py --train=True --noise_types="1, 2" --image_size="512, 384"
 First of all, we trained our model like usual autoencoder. The result of its performance is shown on the picture below.
 
 ![AE_vanilla](imgs/AE_vanilla.jpg)
+
+### Latent space learning
+
+Then we trained Autoencoder with additional loss in latent space in order to separate noise and signal. Model was tested on 19 different noises (17 initial and 2 custim noises). Total loss and latent loss for all noises are presented on the image below.
+
