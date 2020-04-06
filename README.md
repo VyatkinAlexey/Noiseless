@@ -143,3 +143,4 @@ First of all, we trained our model like usual autoencoder. The result of its per
 
 Then we trained Autoencoder with additional loss in latent space in order to separate noise and signal. Model was tested on 19 different noises (17 initial and 2 custim noises). Total loss and latent loss for all noises are presented on the image below.
 
+![19_noises](imgs/19_noises.png)
