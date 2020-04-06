@@ -91,7 +91,8 @@ data
 - ```noised_{i}/``` -  folder with noised images, where "i" is the type of noise (1 to 19 in case you use 17 noises from the initial dataset and 2 our custom noises)
 - ```only_noise_{i}/``` - folder with difference of noised images and reference images, where "i" has the same meaning as above
 
-Such structure can be generated via our script ```data_splitting.py```  in the folder ```./scripts/```.
+Such structure can be generated via our script ```data_splitting.py```  in the folder ```./scripts/```. 
+**Folder `data` should be in the repository folder**.
 
 Example usage:
 
