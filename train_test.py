@@ -156,14 +156,14 @@ def train_model(model, data_loader,
     
     fig, axes = plt.subplots(ncols=2, nrows=1, figsize=(16, 9))
 
-    axes[0].plot(np.arange(epochs), epoch_losses, label='Total Loss')
+    axes[0].plot(np.arange(epochs), epoch_losses, label='Total Loss', linewidth=4)
     axes[0].legend(fontsize=16)
     axes[0].set_xlabel('Epoch', fontsize=16)
     axes[0].set_ylabel('Loss value', fontsize=16)
     axes[0].set_xticks(np.arange(epochs))
     axes[0].tick_params(axis='both', labelsize=14)
     
-    axes[1].plot(np.arange(epochs), epoch_latent_losses, label='Latent Loss')
+    axes[1].plot(np.arange(epochs), epoch_latent_losses, label='Latent Loss', linewidth=4)
     axes[1].legend(fontsize=16)
     axes[1].set_xlabel('Epoch', fontsize=16)
     axes[1].set_ylabel('Loss value', fontsize=16)
