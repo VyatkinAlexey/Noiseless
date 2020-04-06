@@ -132,3 +132,7 @@ python ./train_test.py --train=True --noise_types="1, 2" --image_size="512, 384"
 ```
 
 ## Results
+
+### Pure Autoencoder
+
+First of all, we trained our model like usual autoencoder. The result of its performance is shown on the picture below.
