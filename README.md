@@ -112,7 +112,7 @@ Here, as before, `path_to_reference` flag should point to absolute path to `refe
 ### Autoencoder mode
 
 If you want to test architecture and learn model like classical autoencoder, you may use notebook 
-`TestAutoencoderStructure.ipynb`, which is inside `Notebook` folder.
+`TestAutoencoderStructure.ipynb`, which is inside `Notebooks` folder.
 
 
 ### How to train model
@@ -141,7 +141,7 @@ First of all, we trained our model like usual autoencoder. The result of its per
 
 ### Latent space learning
 
-Then we trained Autoencoder with additional loss in latent space in order to separate noise and signal. Model was tested on 19 different noises (17 initial and 2 custim noises). Total loss and latent loss for all noises are presented on the image below.
+Then we trained Autoencoder with additional loss in latent space in order to separate noise and signal. Model was tested on 19 different noises (17 initial and 2 custom noises). To check components of latent vector you can run the ```VisualizeLatentVector.ipynb``` notebook in the folder ```Notebooks```. Total loss and latent loss for all noises are presented on the image below.
 
 ![19_noises](imgs/19_noises.png)
 
