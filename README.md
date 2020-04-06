@@ -144,3 +144,11 @@ First of all, we trained our model like usual autoencoder. The result of its per
 Then we trained Autoencoder with additional loss in latent space in order to separate noise and signal. Model was tested on 19 different noises (17 initial and 2 custim noises). Total loss and latent loss for all noises are presented on the image below.
 
 ![19_noises](imgs/19_noises.png)
+
+Model performance on the best fitted noise is presented on the image below.
+
+![hor_lines](imgs/black_horizontal_lines.PNG)
+
+### Discussions
+
+Black horizontal line on reproduced image is connected with the fact, that last components in latent space were not associated with noise signal, but with bottom pixels of the input image. We have tried to overcome this issue by different cropping size and different number of epochs, but the problem still exists for all hyperparameters of training procedure.
