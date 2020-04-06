@@ -115,6 +115,8 @@ def train_model(model, data_loader,
                 device=DEVICE):
     model.to(device)
     
+    epoch_losses = []
+    epoch_latent_losses = []
     for epoch in range(epochs):
         model.train()
         print('Epoch {}/{}:'.format(epoch, epochs - 1), flush=True)
@@ -149,6 +151,27 @@ def train_model(model, data_loader,
         epoch_latent_loss = running_latent_loss / len(data_loader)
         print('Total Loss: {:.4f}, Latent Loss: {:.4f}'.format(epoch_loss, epoch_latent_loss), flush=True)
         
+        epoch_losses.append(epoch_loss)
+        epoch_latent_losses.append(epoch_latent_loss)
+    
+    fig, axes = plt.subplots(ncols=2, nrows=1, figsize=(16, 9))
+
+    axes[0].plot(np.arange(epochs), epoch_losses, label='Total Loss')
+    axes[0].legend(fontsize=16)
+    axes[0].set_xlabel('Epoch', fontsize=16)
+    axes[0].set_ylabel('Loss value', fontsize=16)
+    axes[0].set_xticks(np.arange(epochs))
+    axes[0].tick_params(axis='both', labelsize=14)
+    
+    axes[1].plot(np.arange(epochs), epoch_latent_losses, label='Latent Loss')
+    axes[1].legend(fontsize=16)
+    axes[1].set_xlabel('Epoch', fontsize=16)
+    axes[1].set_ylabel('Loss value', fontsize=16)
+    axes[1].set_xticks(np.arange(epochs))
+    axes[1].tick_params(axis='both', labelsize=14)
+    
+    fig.savefig('./train_losses', bbox_inches='tight')
+            
     return model
     
 def test_evaluation(model, dataset,
