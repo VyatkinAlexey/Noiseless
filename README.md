@@ -109,7 +109,7 @@ Here, as before, `path_to_reference` flag should point to absolute path to `refe
 
 ## Model
 
-## Autoencoder mode
+### Autoencoder mode
 
 If you want to test architecture and learn model like classical autoencoder, you may use notebook 
 `TestAutoencoderStructure.ipynb`, which is inside `Notebook` folder.
@@ -131,3 +131,5 @@ The example of usage:
 
 python ./train_test.py --train=True --noise_types="1, 2" --image_size="512, 384" --frame_size="64, 64" --overlay_size="5, 5" --latent_clean_size=0.9 --batch_size=4 --epochs=20 --test=True
 ```
+
+## Results
