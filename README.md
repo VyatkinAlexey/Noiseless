@@ -73,6 +73,7 @@ Here `path_to_clean_images` flag should point to absolute path to `reference_ima
 
 `path_to_corrupted_images` flag should point to absolute path to `distorted_images` folder.
 
+If you will use all 17 noise types, please specify `noise_type` as 18 and 19, respectively. If you will use `n` noise types, please specify `noise_type` as `n+1` and `n+2`, respectively.
 
 ### How to create folders structure necessary for training our model
 
